@@ -4,7 +4,7 @@
             <q-collapsible
                     icon="info_outline"
                     label="Dados do Evento"
-                    style="max-width: 800px; margin-bottom: 10px"
+                    style="max-width: 800px; margin-bottom: 25px"
                     class="shadow-2"
             >
                 <div>
@@ -52,43 +52,6 @@
                     </q-item>
                 </div>
             </q-collapsible>
-          <q-collapsible
-             icon="ion-person"
-             label="Dados do Cliente"
-             style="max-width: 800px; margin-bottom: 10px"
-             class="shadow-2"
-          >
-            <div>
-              <template v-if="event.client">
-                <q-item>
-                  <q-item-main>
-                    <q-item-tile label>Nome</q-item-tile>
-                    <q-item-tile sublabel>{{ event.client.name }}</q-item-tile>
-                  </q-item-main>
-                </q-item>
-                <q-item>
-                  <q-item-main>
-                    <q-item-tile label>Document</q-item-tile>
-                    <q-item-tile sublabel>{{ event.client.document | document }}</q-item-tile>
-                  </q-item-main>
-                </q-item>
-                <q-item>
-                  <q-item-main>
-                    <q-item-tile label>Telefone</q-item-tile>
-                    <q-item-tile sublabel>{{ event.client.phone }}</q-item-tile>
-                  </q-item-main>
-                </q-item>
-                <template v-if="event.client.phoneAlternative != null">
-                  <q-item>
-                    <q-item-main>
-                      <q-item-tile label>Telefone Alternativo</q-item-tile>
-                      <q-item-tile sublabel>{{ event.client.phoneAlternative }}</q-item-tile>
-                    </q-item-main>
-                  </q-item>
-                </template>
-              </template>
-            </div>
-          </q-collapsible>
           <div>
             <q-progress :percentage="progress" stripe animate style="height: 45px" />
           </div>
@@ -104,7 +67,7 @@
                         <span>{{cell.row.created_at | moment }}</span>
                     </template>
                     <template slot="col-select" slot-scope="cell">
-                      <q-checkbox v-model="check_employee" @input="confirme" :val="cell.row.id"/>
+                      <q-checkbox v-model="check_employee" @input="confirme" :disable="vvv" :val="cell.row.id"/>
                     </template>
                     <template slot="selection" slot-scope="selection">
                         <q-btn class="primary clear" @click="goTo(selection)"><q-icon name="remove_red_eye"></q-icon>Salvar registros</q-btn>
@@ -112,10 +75,6 @@
                 </q-data-table>
             </template>
         </div>
-      <q-fixed-position corner="bottom-left" :offset="[16, 16]">
-        <q-btn  @click="goEdit()" round icon="ion-edit" color="orange">
-        </q-btn>
-      </q-fixed-position>
     </div>
 </template>
 
@@ -178,9 +137,6 @@
         }
       },
       methods: {
-        goEdit () {
-          this.$router.push('/events/' + this.event.id + '/edit')
-        },
         removeLastArray () {
           console.log(this.check_employee.pop())
         },
@@ -245,11 +201,11 @@
                 {
                   label: 'Cancelar',
                   handler: () => {
-                    console.log('teste')
+                    this.removeLastArray()
                   }
                 },
                 {
-                  label: 'Salvar',
+                  label: 'Confirmar',
                   handler: () => {
                     this.registerEmployees()
                   }
@@ -257,26 +213,13 @@
               ]
             })
           }
-          else if (this.check_employee.length > this.event.quantityEmployees) {
-            this.removeLastArray()
-            Dialog.create({
-              title: 'Oopa! Atingiu a quantidade de funcionários para este evento',
-              message: 'Os funcionários selecionados, serão escalados para o dia do evento',
-              buttons: [
-                {
-                  label: 'Cancelar',
-                  handler: () => {
-                    console.log('teste')
-                  }
-                },
-                {
-                  label: 'Salvar',
-                  handler: () => {
-                    this.registerEmployees()
-                  }
-                }
-              ]
-            })
+        },
+        vvv () {
+          if (this.check_employee.length === this.event.quantityEmployees) {
+            return true
+          }
+          else {
+            return false
           }
         },
         employeesList () {

@@ -6,17 +6,18 @@
                     <div>
                         <div class="row sm-gutter">
                             <div class="col-xs-12 col-sm-12 col-md-12">
-                                <q-search v-model="terms" placeholder="Selecione o Cliente">
-                                    <q-autocomplete
-                                            v-model="terms"
-                                            @search="search"
-                                            :max-results="4"
-                                            @selected="selected"
-                                    />
-                                    <q-tooltip>
-                                        Digite o nome do cliente
-                                    </q-tooltip>
+                              <template v-if="form.client">
+                                <q-search v-model="form.client.name" placeholder="Selecione o Cliente">
+                                  <q-autocomplete
+                                    v-model="form.client.name"
+                                    @search="search"
+                                    :max-results="4"
+                                  />
+                                  <q-tooltip>
+                                    Digite o nome do cliente
+                                  </q-tooltip>
                                 </q-search>
+                              </template>
                             </div>
                         </div>
                     </div>
@@ -24,9 +25,11 @@
                 <q-step name="second" title="Dados do Evento">
                     <div>
                         <div class="row xs-gutter">
+                          <template v-if="form.client">
                             <div class="col-xs-12 col-sm-12">
-                                Cliente: {{ selectedClient.name }}
+                              Cliente: {{ form.client.name }}
                             </div>
+                          </template>
                             <div class="col-xs-12 col-sm-12">
                                 <q-field
                                         :error="$v.form.name.$error"
@@ -86,20 +89,28 @@
                                 </div>
                             </template>
                             <template v-if="this.form.endDate !== ''">
-                                <div class="col-xs-12 col-sm-5">
-                                    <q-field
-                                            :error="$v.form.quantityEmployees.$error"
-                                            :error-label="quantityEmployeesError">
-                                        <q-input
-                                                type="number"
-                                                v-model="form.quantityEmployees"
-                                                :min="0"
-                                                float-label="Quantidade de Seguranças"
-                                                class="no-margin"
-                                                @blur="$v.form.quantityEmployees.$touch"
-                                        />
-                                    </q-field>
-                                </div>
+                              <div class="col-12">
+                                Duração: {{ calculeDuration }}
+                              </div>
+                              <div class="col-12">
+                                Funcionários Disponíveis: {{ knob }}
+                              </div>
+                                  <q-field
+                                    label="Selecione a quantidade"
+                                    :label-width="10"
+                                    :error="$v.form.quantityEmployees.$error"
+                                    error-label="Este campo é obrigatorio"
+                                  >
+                                    <q-knob
+                                      class="text-primary"
+                                      v-model="form.quantityEmployees"
+                                      :min="0"
+                                      :step="2"
+                                      :max="knob"
+                                    >
+                                      <q-icon class="on-left" name="ion-person-stalker" /> {{form.quantityEmployees}}
+                                    </q-knob>
+                                  </q-field>
                             </template>
                             <div class="col-xs-12 col-sm-12">
                                 <q-field
@@ -186,7 +197,7 @@
                         Voltar
                     </q-btn>
                     <template v-if="step === 'first'">
-                    <q-btn color="primary" :disabled="$v.terms.$invalid" @click="$refs.stepper.next()" >Avançar</q-btn>
+                    <q-btn color="primary" @click="$refs.stepper.next()" >Avançar</q-btn>
                     </template>
                     <template v-if="step === 'second'">
                         <q-btn color="primary" :disabled="$v.form.quantityEmployees.$invalid" @click="$refs.stepper.next()"> Avançar </q-btn>
@@ -204,9 +215,10 @@
   import PhoneFormatter from '../../../services/my-formatter'
   import axios from 'axios'
   import statesMixin from '../../../mixins/states.mixin'
-  import { required } from 'vuelidate/lib/validators'
+  import { required, minValue } from 'vuelidate/lib/validators'
   import { CNPJ, CPF } from 'cpf_cnpj'
   import {
+    QKnob,
     QTooltip,
     QDatetime,
     QDatetimeRange,
@@ -252,28 +264,40 @@
         resp: '',
         step: 'first',
         error: false,
-        terms: '',
         clients: [],
         selectedClient: { address: {} }
       }
     },
+    mounted () {
+      this.getClients()
+      this.$store.dispatch('eventsGet', this.$route.params.id)
+    },
     computed: {
+      calculeDuration () {
+        const date1 = moment(this.form.startDate)
+        const date2 = moment(this.form.endDate)
+        const differenceInMs = date2.diff(date1)
+        const duration = moment.duration(differenceInMs)
+        const differenceInHours = duration.asHours()
+        this.duration = differenceInHours
+        return differenceInHours + ' Horas'
+      },
+      knob () {
+        let data = {
+          startDate: moment(this.form.startDate).format('YYYY-MM-DD HH:mm:ss'),
+          endDate: moment(this.form.endDate).format('YYYY-MM-DD HH:mm:ss')
+        }
+        this.$http.post('http://127.0.0.1:8000/api/events/check', data)
+          .then((response) => {
+            this.available = response.body.quantity
+          })
+        return this.available
+      },
       form () {
         return this.$store.state.events.one || {}
       },
       cList () {
         return this.$store.state.clients.list
-      },
-      quantityEmployeesError () {
-        if (!this.$v.form.quantityEmployees.required) {
-          return 'Este campo é obrigatório!'
-        }
-        else if (!this.$v.form.quantityEmployees.checkDate) {
-          return `Só existem ${this.available} funcionários disponíveis para essa data!`
-        }
-        else {
-          return null
-        }
       },
       endError () {
         if (!this.$v.form.endDate.required) {
@@ -307,25 +331,14 @@
       }
     },
     validations: {
-      terms: { required },
       form: {
+        client: {
+          name: { required }
+        },
         name: { required },
         quantityEmployees: {
           required,
-          async checkDate (value) {
-            if (value === '') return true
-            let data = {
-              quantityEmployees: this.form.quantityEmployees,
-              startDate: this.form.startDate,
-              endDate: this.form.endDate
-            }
-            this.$http.post('http://127.0.0.1:8000/api/events/check', data)
-              .then((response) => {
-                this.available = response.body.quantity
-                this.resp = response.body.resp
-              })
-            return this.resp
-          }
+          minValue: minValue(2)
         },
         local: { required },
         zip_code: { required },
@@ -381,7 +394,8 @@
       },
       submit () {
         let data = {
-          client_id: this.selectedClient.id,
+          duration: this.duration,
+          client_id: this.form.client.id,
           name: this.form.name,
           local: this.form.local,
           zip_code: this.form.zip_code,
@@ -393,21 +407,21 @@
           endDate: moment(this.form.endDate).format('YYYY-MM-DD HH:mm:ss')
         }
         if (this.$v.form.$invalid === false) {
-          this.$store.dispatch('eventInsert', data)
+          this.$store.dispatch('eventUpdate', {id: this.$route.params.id, data: data})
             .then((response) => {
               console.log(response)
               Loading.show()
               this.$router.push('/events')
               this.closeLoading()
               Toast.create.positive({
-                html: 'Evento cadastrado com sucesso!',
+                html: 'Evento editado com sucesso!',
                 icon: 'done'
               })
             })
             .catch((response) => {
               console.log(response)
               Toast.create.negative({
-                html: 'Não pode ser cadastrado',
+                html: 'Não pode ser editado',
                 icon: 'cancel'
               })
             })
@@ -421,10 +435,6 @@
           done(filter(terms, {field: 'value', list: this.parseClients}))
         }, 500)
       },
-      selected (client) {
-        this.selectedClient = client.allData
-        this.$refs.stepper.next()
-      },
       getClients () {
         this.$http.get('http://127.0.0.1:8000/api/clients?where[status]=1')
           .then(response => {
@@ -432,10 +442,8 @@
           })
       }
     },
-    mounted () {
-      this.getClients()
-    },
     components: {
+      QKnob,
       QTooltip,
       QDatetimeRange,
       QDatetime,

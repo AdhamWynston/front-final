@@ -117,10 +117,6 @@
                 </q-list>
             </div>
         </div>
-        <q-fixed-position corner="bottom-left" :offset="[16, 16]">
-            <q-btn  @click="goEdit()" round icon="ion-edit" color="orange">
-            </q-btn>
-        </q-fixed-position>
     </div>
 </template>
 
@@ -271,9 +267,6 @@
         eventDate () {
           this.eventCreated = moment().format('DD/MM/YYYY')
           return this.eventCreated
-        },
-        goEdit () {
-          this.$router.push('/events/' + this.event.id + '/edit')
         }
       }
     }

@@ -14,7 +14,18 @@
                 <span>{{cell.row.created_at | moment }}</span>
             </template>
             <template slot="col-actions" slot-scope="cell">
+              <template v-if="cell.row.status === 1">
                 <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
+              </template>
+              <template v-if="cell.row.status === 2">
+                <q-btn color="primary" round @click="goManageView(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
+              </template>
+              <template v-if="cell.row.status === 3">
+                <q-btn color="primary" round @click="goTo(cell.row.id)" flat small><q-tooltip>Visualizar Evento</q-tooltip><q-icon name="remove_red_eye"></q-icon></q-btn>
+              </template>
+              <template v-if="cell.row.status === 4">
+                <q-btn color="primary" round @click="goTo(cell.row.id)" flat small><q-tooltip>Visualizar Evento</q-tooltip><q-icon name="remove_red_eye"></q-icon></q-btn>
+              </template>
             </template>
             <template slot="col-startDate" slot-scope="cell">
                 <span>{{cell.row.startDate | moment }}</span>
@@ -88,6 +99,9 @@
           events: []
         }
       },
+      mounted () {
+        this.$store.dispatch('manageGet', this.$route.params.id)
+      },
       computed: {
       },
       methods: {
@@ -106,9 +120,11 @@
         goManage (id) {
           return this.$router.push('/events/' + id + '/manage')
         },
+        goManageView (id) {
+          return this.$router.push('/events/' + id + '/manage')
+        },
         goTo (item) {
-          let id = item.rows[0].data.id
-          return this.$router.push('/events/' + id)
+          return this.$router.push('/events/' + item)
         },
         refresh (done) {
           this.timeout = setTimeout(() => {
