@@ -5,7 +5,8 @@ export default {
   state: {
     list: [],
     employeeList: [],
-    one: {}
+    one: {},
+    manageEmployees: []
   },
   mutations: {
     update (state, config) {
@@ -23,10 +24,10 @@ export default {
         })
     },
     manageGet (context, id) {
-      return Vue.http.get('http://127.0.0.1:8000/api/events/' + id)
+      return Vue.http.get('http://127.0.0.1:8000/api/manage/check/events/' + id)
         .then((res) => {
           context.commit('update', {
-            state: 'one',
+            state: 'manageEmployees',
             data: res.data
           })
         })

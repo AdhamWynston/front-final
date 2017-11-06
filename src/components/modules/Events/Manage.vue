@@ -116,6 +116,7 @@
         <q-btn  @click="goEdit()" round icon="ion-edit" color="orange">
         </q-btn>
       </q-fixed-position>
+      {{ tees }}
     </div>
 </template>
 
@@ -172,7 +173,6 @@
         return {
           client: {},
           employees: [],
-          check_employee: [],
           check_row: false,
           checked: 0
         }
@@ -182,7 +182,7 @@
           this.$router.push('/events/' + this.event.id + '/edit')
         },
         removeLastArray () {
-          console.log(this.check_employee.pop())
+          this.check_employee.pop()
         },
         registerEmployees () {
           let data = {
@@ -231,53 +231,27 @@
         }
       },
       computed: {
+        confirme () {
+          if (this.check_employee.length > this.event.quantityEmployees) {
+            this.removeLastArray()
+          }
+          else if (this.check_employee.length === this.event.quantityEmployees) {
+            console.log(this.check_employee.length)
+          }
+        },
+        tees () {
+          console.log(this.check_employee)
+        },
+        check_employee () {
+          return this.$store.state.events.manageEmployees || []
+        },
+        manageEmployees () {
+          return this.$store.state.events.manageEmployees || []
+        },
         progress () {
           let x = this.event.quantityEmployees
           let val = (100 / x) * this.check_employee.length
           return val
-        },
-        confirme () {
-          if (this.check_employee.length === this.event.quantityEmployees) {
-            Dialog.create({
-              title: 'Oopa! Atingiu a quantidade de funcionários para este evento',
-              message: 'Os funcionários selecionados, serão escalados para o dia do evento',
-              buttons: [
-                {
-                  label: 'Cancelar',
-                  handler: () => {
-                    console.log('teste')
-                  }
-                },
-                {
-                  label: 'Salvar',
-                  handler: () => {
-                    this.registerEmployees()
-                  }
-                }
-              ]
-            })
-          }
-          else if (this.check_employee.length > this.event.quantityEmployees) {
-            this.removeLastArray()
-            Dialog.create({
-              title: 'Oopa! Atingiu a quantidade de funcionários para este evento',
-              message: 'Os funcionários selecionados, serão escalados para o dia do evento',
-              buttons: [
-                {
-                  label: 'Cancelar',
-                  handler: () => {
-                    console.log('teste')
-                  }
-                },
-                {
-                  label: 'Salvar',
-                  handler: () => {
-                    this.registerEmployees()
-                  }
-                }
-              ]
-            })
-          }
         },
         employeesList () {
           return this.$store.state.events.employeeList
@@ -289,6 +263,7 @@
       mounted () {
         this.$store.dispatch('eventsGet', this.$route.params.id)
         this.$store.dispatch('employeesManageList')
+        this.$store.dispatch('manageGet', this.$route.params.id)
       },
       filters: {
         moment: function (date) {

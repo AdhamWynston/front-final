@@ -99,9 +99,6 @@
           events: []
         }
       },
-      mounted () {
-        this.$store.dispatch('manageGet', this.$route.params.id)
-      },
       computed: {
       },
       methods: {
