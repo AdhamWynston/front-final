@@ -75,12 +75,12 @@ export default {
           filter: true,
           sort: true,
           type: 'integer',
-          width: '40px'
+          width: '50px'
         },
         {
           label: 'Ações',
           field: 'actions',
-          width: '20px'
+          width: '30px'
         }
       ]
     }

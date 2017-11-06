@@ -56,6 +56,9 @@ export default {
     manageInsert (context, data) {
       return Vue.http.post('http://127.0.0.1:8000/api/manage/events', data)
     },
+    manageEmployeeList (context, config) {
+      return Vue.http.post('http://127.0.0.1:8000/api/manage/employee/list' + config.id, config.data)
+    },
     eventUpdate (context, config) {
       return Vue.http.put('http://127.0.0.1:8000/api/events/' + config.id, config.data)
     },

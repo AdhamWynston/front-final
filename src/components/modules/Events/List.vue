@@ -18,13 +18,13 @@
                 <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
               </template>
               <template v-if="cell.row.status === 2">
-                <q-btn color="primary" round @click="goManageView(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
+                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
               </template>
               <template v-if="cell.row.status === 3">
-                <q-btn color="primary" round @click="goTo(cell.row.id)" flat small><q-tooltip>Visualizar Evento</q-tooltip><q-icon name="remove_red_eye"></q-icon></q-btn>
+                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
               </template>
               <template v-if="cell.row.status === 4">
-                <q-btn color="primary" round @click="goTo(cell.row.id)" flat small><q-tooltip>Visualizar Evento</q-tooltip><q-icon name="remove_red_eye"></q-icon></q-btn>
+                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
               </template>
             </template>
             <template slot="col-startDate" slot-scope="cell">
@@ -74,6 +74,7 @@
     import dataTableEventMixin from '../../../mixins/dataTableEvent.mixin'
     import moment from 'moment'
     import {
+      Loading,
       QOptionGroup,
       QIcon,
       QFixedPosition,
@@ -105,6 +106,9 @@
         computedHours (start) {
           console.log(start)
         },
+        closeLoading () {
+          setTimeout(Loading.hide, 2000)
+        },
         getEvents (param) {
           this.$http.get('http://127.0.0.1:8000/api/events?' + param)
             .then((response) => {
@@ -115,7 +119,11 @@
           return this.$router.push('/events/create')
         },
         goManage (id) {
-          return this.$router.push('/events/' + id + '/manage')
+          Loading.show({
+            delay: 500
+          })
+          this.closeLoading()
+          this.$router.push('/events/' + id + '/manage')
         },
         goManageView (id) {
           return this.$router.push('/events/' + id + '/manage')

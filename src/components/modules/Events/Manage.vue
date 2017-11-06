@@ -89,10 +89,10 @@
               </template>
             </div>
           </q-collapsible>
-          <div>
-            <q-progress :percentage="progress" stripe animate style="height: 45px" />
-          </div>
-            <template >
+            <template v-if="this.event.status === 1 || this.event.status === 2">
+              <div>
+                <q-progress :percentage="progress" stripe animate style="height: 45px" />
+              </div>
                 <q-data-table
                         :data="employeesList.data || []"
                         :columns="columns"
@@ -111,12 +111,16 @@
                     </template>
                 </q-data-table>
             </template>
+          <template v-if="this.event.status === 3">
+            <div><h4>VTNC</h4></div>
+          </template>
         </div>
-      <q-fixed-position corner="bottom-left" :offset="[16, 16]">
-        <q-btn  @click="goEdit()" round icon="ion-edit" color="orange">
-        </q-btn>
-      </q-fixed-position>
-      {{ tees }}
+      <template v-if="this.event.status === 1 || this.event.status === 2">
+        <q-fixed-position corner="bottom-left" :offset="[16, 16]">
+          <q-btn  @click="goEdit()" round icon="ion-edit" color="orange">
+          </q-btn>
+        </q-fixed-position>
+      </template>
     </div>
 </template>
 
@@ -189,6 +193,10 @@
             event_id: this.$route.params.id,
             employees: this.check_employee
           }
+          let alter = {
+            status: 2
+          }
+          this.$store.dispatch('eventUpdate', {id: this.$route.params.id, data: alter})
           this.$store.dispatch('manageInsert', data)
             .then((response) => {
               console.log(response)
@@ -234,13 +242,24 @@
         confirme () {
           if (this.check_employee.length > this.event.quantityEmployees) {
             this.removeLastArray()
+            Dialog.create({
+              title: 'Oopa! Atingiu a quantidade de funcionários para este evento',
+              message: 'Os funcionários selecionados, serão escalados para o dia do evento',
+              buttons: [
+                {
+                  label: 'Cancelar',
+                  handler: () => {
+                  }
+                },
+                {
+                  label: 'Salvar',
+                  handler: () => {
+                    this.registerEmployees()
+                  }
+                }
+              ]
+            })
           }
-          else if (this.check_employee.length === this.event.quantityEmployees) {
-            console.log(this.check_employee.length)
-          }
-        },
-        tees () {
-          console.log(this.check_employee)
         },
         check_employee () {
           return this.$store.state.events.manageEmployees || []
