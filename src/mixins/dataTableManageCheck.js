@@ -2,7 +2,7 @@ import {CPF} from 'cpf_cnpj'
 export default {
   data () {
     return {
-      configCheck: {
+      config: {
         title: 'Escalar funcionários',
         columnPicker: true,
         leftStickyColumns: 0,
@@ -30,7 +30,7 @@ export default {
           }
         }
       },
-      columnsCheck: [
+      columns: [
         {
           label: '#',
           field: 'select',
@@ -39,8 +39,8 @@ export default {
         {
           label: 'Nome',
           field: 'name',
-          type: 'string',
           width: '100px',
+          type: 'string',
           sort: true,
           filter: true
         },
@@ -61,6 +61,32 @@ export default {
           width: '50px',
           sort: false,
           filter: true
+        }
+      ],
+      columnsCheck: [
+        {
+          label: 'Nome',
+          field: 'name',
+          type: 'string',
+          sort: true,
+          filter: true
+        },
+        {
+          label: 'Nº Documento',
+          field: 'document',
+          sort: false,
+          width: '200px',
+          filter: true
+        },
+        {
+          label: 'Entrada',
+          field: 'checkin',
+          width: '120px'
+        },
+        {
+          label: 'Saída',
+          field: 'checkout',
+          width: '120px'
         }
       ]
     }

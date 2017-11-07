@@ -3,6 +3,7 @@ import auth from './modules/auth'
 import employees from './modules/employees'
 import users from './modules/users'
 import events from './modules/events'
+import manageEvents from './modules/manageEvents'
 // import Auth from '../Packages/Auth'
 export default {
   modules: {
@@ -10,6 +11,7 @@ export default {
     auth: auth,
     employees: employees,
     users: users,
-    events: events
+    events: events,
+    manageEvents: manageEvents
   }
 }

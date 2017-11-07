@@ -4,9 +4,8 @@ import Vue from 'vue'
 export default {
   state: {
     list: [],
-    employeeList: [],
-    one: {},
-    manageEmployees: []
+    employeeCheckList: [],
+    one: {}
   },
   mutations: {
     update (state, config) {
@@ -23,30 +22,12 @@ export default {
           })
         })
     },
-    manageGet (context, id) {
-      return Vue.http.get('http://127.0.0.1:8000/api/manage/check/events/' + id)
-        .then((res) => {
-          context.commit('update', {
-            state: 'manageEmployees',
-            data: res.data
-          })
-        })
-    },
     eventsGet (context, id) {
       return Vue.http.get('http://127.0.0.1:8000/api/events/' + id)
         .then((res) => {
           context.commit('update', {
             state: 'one',
             data: res.data
-          })
-        })
-    },
-    employeesManageList (context, id) {
-      return Vue.http.get('http://127.0.0.1:8000/api/manage/employee/list/' + id)
-        .then((res) => {
-          context.commit('update', {
-            state: 'employeeList',
-            data: res
           })
         })
     },

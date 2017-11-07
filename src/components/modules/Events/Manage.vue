@@ -1,10 +1,10 @@
 <template>
     <div class="layout-padding row justify-center">
-        <div class="col-xs-12 col-sm-8 col-md-8">
+        <div class="col-xs-12 col-sm-12 col-md-12">
             <q-collapsible
                     icon="info_outline"
                     label="Dados do Evento"
-                    style="max-width: 800px; margin-bottom: 10px"
+                    style="max-width: 1000px; margin-bottom: 10px"
                     class="shadow-2"
             >
                 <div>
@@ -55,7 +55,7 @@
           <q-collapsible
              icon="ion-person"
              label="Dados do Cliente"
-             style="max-width: 800px; margin-bottom: 10px"
+             style="max-width: 1000px; margin-bottom: 10px"
              class="shadow-2"
           >
             <div>
@@ -104,7 +104,7 @@
                         <span>{{cell.row.created_at | moment }}</span>
                     </template>
                     <template slot="col-select" slot-scope="cell">
-                      <q-checkbox v-model="check_employee" @input="confirme" :val="cell.row.id"/>
+                      <q-checkbox v-model="check_employee" @change="testes(cell.row.id)" @input="confirme" :val="cell.row.id"/>
                     </template>
                     <template slot="selection" slot-scope="selection">
                         <q-btn class="primary clear" @click="goTo(selection)"><q-icon name="remove_red_eye"></q-icon>Salvar registros</q-btn>
@@ -113,16 +113,22 @@
             </template>
           <template v-if="this.event.status === 3">
             <q-data-table
-              :data="this.employeesCheckList || []"
+              :data="manageEmployeesList || []"
               :columns="columnsCheck"
-              :config="config"
+              :config="configCheck"
               @refresh="refresh"
             >
               <template slot="col-name" slot-scope="cell">
-                <div>{{cell.row.employee.name}}</div>
+                <span>{{cell.row.name}}</span>
               </template>
               <template slot="col-document" slot-scope="cell">
-                <div>{{cell.row.employee.document}}</div>
+                <span>{{cell.row.document | document}}</span>
+              </template>
+              <template slot="col-checkin" slot-scope="cell">
+                <q-toggle v-model="checkinArray" @change="alterCheckin(cell.row.id)" left-label color="primary" :val="cell.row.id" />
+              </template>
+              <template slot="col-checkout" slot-scope="cell">
+                <q-toggle v-model="checkoutArray" color="primary" :val="cell.row.id" />
               </template>
             </q-data-table>
           </template>
@@ -139,6 +145,7 @@
 <script>
     import moment from 'moment'
     import dataTableEventMixin from '../../../mixins/dataTableManageEvent'
+    import DataTableCheckEvent from '../../../mixins/dataTableManageCheck'
     import { CNPJ, CPF } from 'cpf_cnpj'
     import {
       QProgress,
@@ -184,7 +191,7 @@
       QTooltip,
       QScrollArea} from 'quasar'
     export default {
-      mixins: [dataTableEventMixin],
+      mixins: [dataTableEventMixin, DataTableCheckEvent],
       data () {
         return {
           client: {},
@@ -192,7 +199,7 @@
           check_row: false,
           checked: 0,
           employeesList: [],
-          employeesCheckList: []
+          checkoutArray: []
         }
       },
       methods: {
@@ -247,6 +254,9 @@
               })
             })
         },
+        testes (v) {
+          console.log(v)
+        },
         goTo (value) {
           console.log(value)
         },
@@ -264,21 +274,24 @@
             done()
           }, 5000)
         },
-        getEmployeesCheckList () {
-          this.$http.get('http://127.0.0.1:8000/api/manage/employee/checkList/' + this.$route.params.id)
-            .then((response) => {
-              console.log(response)
-              this.employeesCheckList = response.data
-            })
-        },
         getEmployees () {
           this.$http.get('http://127.0.0.1:8000/api/manage/employee/list/' + this.$route.params.id)
             .then((response) => {
               this.employeesList = response.data
             })
+        },
+        alterCheckin (v) {
+          console.log(v)
+          console.log(this.checkinArray)
         }
       },
       computed: {
+        timeNow () {
+          return moment(Date.now()).format('DD/MM/YYYY HH:mm')
+        },
+        checkinArray () {
+          return this.$store.state.manageEvents.employeeCheckinList
+        },
         confirme () {
           if (this.event.status === 1) {
             if (this.check_employee.length === this.event.quantityEmployees) {
@@ -295,10 +308,10 @@
           }
         },
         check_employee () {
-          return this.$store.state.events.manageEmployees || []
+          return this.$store.state.manageEvents.manageEmployees || []
         },
-        manageEmployees () {
-          return this.$store.state.events.manageEmployees || []
+        manageEmployeesList () {
+          return this.$store.state.manageEvents.manageList || []
         },
         progress () {
           let x = this.event.quantityEmployees
@@ -312,8 +325,9 @@
       mounted () {
         this.$store.dispatch('eventsGet', this.$route.params.id)
         this.$store.dispatch('manageGet', this.$route.params.id)
+        this.$store.dispatch('employeeCheckinListGet', this.$route.params.id)
+        this.$store.dispatch('manageListGet', this.$route.params.id)
         this.getEmployees()
-        this.getEmployeesCheckList()
       },
       filters: {
         moment: function (date) {
