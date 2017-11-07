@@ -41,8 +41,8 @@ export default {
           })
         })
     },
-    employeesManageList (context) {
-      return Vue.http.get('http://127.0.0.1:8000/api/employees?where[status]=1')
+    employeesManageList (context, id) {
+      return Vue.http.get('http://127.0.0.1:8000/api/manage/employee/list/' + id)
         .then((res) => {
           context.commit('update', {
             state: 'employeeList',

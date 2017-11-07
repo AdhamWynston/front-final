@@ -62,6 +62,22 @@ export default {
           sort: false,
           filter: true
         }
+      ],
+      columnsCheck: [
+        {
+          label: 'Nome',
+          field: 'name',
+          width: '400px',
+          type: 'string',
+          sort: true,
+          filter: true
+        },
+        {
+          label: 'Nº Documento',
+          field: 'document',
+          sort: false,
+          filter: true
+        }
       ]
     }
   }

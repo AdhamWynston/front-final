@@ -1,9 +1,10 @@
 <template>
     <div class="layout-padding">
         <q-btn color="primary" @click="getEvents()" flat> Todos</q-btn>
-        <q-btn color="primary" @click="getEvents('where[status]=1')" flat> Em andamento</q-btn>
-        <q-btn color="primary" @click="getEvents('where[status]=2')" flat> Realizados</q-btn>
-        <q-btn color="primary" @click="getEvents('where[status]=3')" flat> Cancelados </q-btn>
+        <q-btn color="primary" @click="getEvents('where[status]=1')" flat> Aguardando</q-btn>
+        <q-btn color="primary" @click="getEvents('where[status]=2')" flat> Escalado</q-btn>
+        <q-btn color="primary" @click="getEvents('where[status]=3')" flat> Andamento </q-btn>
+      <q-btn color="primary" @click="getEvents('where[status]=3')" flat> Cancelados </q-btn>
         <q-data-table
                 :data="this.events"
                 :columns="columns"
@@ -46,8 +47,8 @@
             </div>
             <div v-if="cell.row.status === 3" class="my-label text-white bg-positive">
               <q-icon name="fa-calendar-check-o"></q-icon>
-              Realizado
-              <q-tooltip> Evento realizado </q-tooltip>
+              Andamento
+              <q-tooltip> Evento em andamento </q-tooltip>
             </div>
             <div v-if="cell.row.status === 4" class="my-label text-white bg-negative">
               <q-icon name="fa-ban"></q-icon>

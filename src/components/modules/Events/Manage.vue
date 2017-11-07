@@ -94,7 +94,7 @@
                 <q-progress :percentage="progress" stripe animate style="height: 45px" />
               </div>
                 <q-data-table
-                        :data="employeesList.data || []"
+                        :data="this.employeesList || []"
                         :columns="columns"
                         :config="config"
                         @refresh="refresh"
@@ -112,7 +112,19 @@
                 </q-data-table>
             </template>
           <template v-if="this.event.status === 3">
-            <div><h4>VTNC</h4></div>
+            <q-data-table
+              :data="this.employeesCheckList || []"
+              :columns="columnsCheck"
+              :config="config"
+              @refresh="refresh"
+            >
+              <template slot="col-name" slot-scope="cell">
+                <div>{{cell.row.employee.name}}</div>
+              </template>
+              <template slot="col-document" slot-scope="cell">
+                <div>{{cell.row.employee.document}}</div>
+              </template>
+            </q-data-table>
           </template>
         </div>
       <template v-if="this.event.status === 1 || this.event.status === 2">
@@ -178,10 +190,31 @@
           client: {},
           employees: [],
           check_row: false,
-          checked: 0
+          checked: 0,
+          employeesList: [],
+          employeesCheckList: []
         }
       },
       methods: {
+        alertConfirme () {
+          Dialog.create({
+            title: 'Oopa! Atingiu a quantidade de funcionários para este evento',
+            message: 'Os funcionários selecionados, serão escalados para o dia do evento',
+            buttons: [
+              {
+                label: 'Cancelar',
+                handler: () => {
+                }
+              },
+              {
+                label: 'Salvar',
+                handler: () => {
+                  this.registerEmployees()
+                }
+              }
+            ]
+          })
+        },
         goEdit () {
           this.$router.push('/events/' + this.event.id + '/edit')
         },
@@ -231,34 +264,34 @@
             done()
           }, 5000)
         },
-        getEmployees () {
-          this.$http.get('http://127.0.0.1:8000/api/employees?where[status]=1')
+        getEmployeesCheckList () {
+          this.$http.get('http://127.0.0.1:8000/api/manage/employee/checkList/' + this.$route.params.id)
             .then((response) => {
-              this.employees = response.data
+              console.log(response)
+              this.employeesCheckList = response.data
+            })
+        },
+        getEmployees () {
+          this.$http.get('http://127.0.0.1:8000/api/manage/employee/list/' + this.$route.params.id)
+            .then((response) => {
+              this.employeesList = response.data
             })
         }
       },
       computed: {
         confirme () {
-          if (this.check_employee.length > this.event.quantityEmployees) {
+          if (this.event.status === 1) {
+            if (this.check_employee.length === this.event.quantityEmployees) {
+              this.alertConfirme()
+            }
+            else if (this.check_employee.length > this.event.quantityEmployees) {
+              this.removeLastArray()
+              this.alertConfirme()
+            }
+          }
+          else if (this.check_employee.length > this.event.quantityEmployees) {
             this.removeLastArray()
-            Dialog.create({
-              title: 'Oopa! Atingiu a quantidade de funcionários para este evento',
-              message: 'Os funcionários selecionados, serão escalados para o dia do evento',
-              buttons: [
-                {
-                  label: 'Cancelar',
-                  handler: () => {
-                  }
-                },
-                {
-                  label: 'Salvar',
-                  handler: () => {
-                    this.registerEmployees()
-                  }
-                }
-              ]
-            })
+            this.alertConfirme()
           }
         },
         check_employee () {
@@ -272,17 +305,15 @@
           let val = (100 / x) * this.check_employee.length
           return val
         },
-        employeesList () {
-          return this.$store.state.events.employeeList
-        },
         event () {
           return this.$store.state.events.one || {}
         }
       },
       mounted () {
         this.$store.dispatch('eventsGet', this.$route.params.id)
-        this.$store.dispatch('employeesManageList')
         this.$store.dispatch('manageGet', this.$route.params.id)
+        this.getEmployees()
+        this.getEmployeesCheckList()
       },
       filters: {
         moment: function (date) {
