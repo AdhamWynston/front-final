@@ -47,7 +47,7 @@
         },
         submitAlterCheckoutToggle (value) {
           let checkout
-          if (value.check_in === null) {
+          if (value.check_out === null) {
             checkout = moment().format('YYYY-MM-DD HH:mm:ss')
           }
           else {
@@ -70,13 +70,14 @@
               {
                 label: 'Cancelar',
                 handler: () => {
+                  console.log(this.check_inArray)
                   return this.check_inArray.push(value.employee_id)
                 }
               },
               {
                 label: 'Confirmar',
                 handler: () => {
-                  this.submitAlterCheckinToggle(value)
+                  this.submitAlterCheckoutToggle(value)
                 }
               }
             ]
@@ -90,6 +91,7 @@
               {
                 label: 'Cancelar',
                 handler: () => {
+                  console.log(this.check_outArray)
                   return this.check_outArray.push(value.employee_id)
                 }
               },
@@ -122,7 +124,7 @@
             this.alertAlterCheckoutToggle(value)
           }
           else {
-            this.submitAlterCheckinToggle(value)
+            this.submitAlterCheckoutToggle(value)
           }
         }
       },
