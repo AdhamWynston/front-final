@@ -1,6 +1,6 @@
 <template>
   <div class="layout-padding row justify-center">
-    <div style="width: 700px; max-width: 90vw;">
+    <div style="width: 800px; max-width: 90vw;">
     <q-stepper color="primary" v-model="step" ref="stepper" flat>
       <q-step name="first" title="Dados Pessoais" color="light">
         <div>

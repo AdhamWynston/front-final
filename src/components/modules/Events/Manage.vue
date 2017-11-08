@@ -104,7 +104,7 @@
                         <span>{{cell.row.created_at | moment }}</span>
                     </template>
                     <template slot="col-select" slot-scope="cell">
-                      <q-checkbox v-model="check_employee" @change="testes(cell.row.id)" @input="confirme" :val="cell.row.id"/>
+                      <q-checkbox v-model="check_employee" @change="confirme()" :val="cell.row.id"/>
                     </template>
                     <template slot="selection" slot-scope="selection">
                         <q-btn class="primary clear" @click="goTo(selection)"><q-icon name="remove_red_eye"></q-icon>Salvar registros</q-btn>
@@ -269,6 +269,15 @@
             return false
           }
         },
+        confirme () {
+          if (this.check_employee.length === this.event.quantityEmployees) {
+            this.alertConfirme()
+          }
+          else if (this.check_employee.length > this.event.quantityEmployees) {
+            this.removeLastArray()
+            this.alertConfirme()
+          }
+        },
         refresh (done) {
           this.timeout = setTimeout(() => {
             done()
@@ -290,22 +299,7 @@
           return moment(Date.now()).format('DD/MM/YYYY HH:mm')
         },
         checkinArray () {
-          return this.$store.state.manageEvents.employeeCheckinList
-        },
-        confirme () {
-          if (this.event.status === 1) {
-            if (this.check_employee.length === this.event.quantityEmployees) {
-              this.alertConfirme()
-            }
-            else if (this.check_employee.length > this.event.quantityEmployees) {
-              this.removeLastArray()
-              this.alertConfirme()
-            }
-          }
-          else if (this.check_employee.length > this.event.quantityEmployees) {
-            this.removeLastArray()
-            this.alertConfirme()
-          }
+          return this.$store.state.events.employeeCheckinList
         },
         check_employee () {
           return this.$store.state.manageEvents.manageEmployees || []

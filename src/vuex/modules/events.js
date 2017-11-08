@@ -31,6 +31,15 @@ export default {
           })
         })
     },
+    employeeCheckinListGet (context, id) {
+      return Vue.http.get('http://127.0.0.1:8000/api/manage/employee/checkin/events/' + id)
+        .then((res) => {
+          context.commit('update', {
+            state: 'employeeCheckinList',
+            data: res.data
+          })
+        })
+    },
     eventInsert (context, data) {
       return Vue.http.post('http://127.0.0.1:8000/api/events', data)
     },
