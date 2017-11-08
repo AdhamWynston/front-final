@@ -4,19 +4,12 @@
               :data="this.checkFrequencyEmployeeList || []"
               :columns="columns"
               :config="config"
-              @refresh="refresh"
             >
-              <template slot="col-name" slot-scope="cell">
-                <span>{{ cell.row.employee.name }}</span>
-              </template>
-              <template slot="col-document" slot-scope="cell">
-                <span>{{ cell.row.employee.document | document }}</span>
-              </template>
               <template slot="col-checkin" slot-scope="cell">
-                <q-toggle v-model="check_inArray" @change="alterCheckin(cell.row)" left-label color="primary" :val="cell.row.employee.id" />
+                <q-toggle v-model="check_inArray" @change="alterCheckin(cell.row)" left-label color="primary" :val="cell.row.employee_id" />
               </template>
               <template slot="col-checkout" slot-scope="cell">
-                <q-toggle v-model="check_outArray" color="primary" :val="cell.row.employee.id" />
+                <q-toggle v-model="check_outArray" @change="alterCheckout(cell.row)" color="primary" :val="cell.row.employee_id" />
               </template>
             </q-data-table>
       </div>
@@ -31,59 +24,83 @@
       mixins: [DataTableCheckEvent],
       data () {
         return {
-          checkFrequencyEmployeeList: [],
-          check_outArray: []
+          checkFrequencyEmployeeList: []
         }
       },
       methods: {
-        submitAlterToggle (value) {
-          let data
-          let id
+        submitAlterCheckinToggle (value) {
+          let checkin
           if (value.check_in === null) {
-            data = {
-              check_in: moment().format('YYYY-MM-DD HH:mm:ss')
-            }
-            id = value.id
+            checkin = moment().format('YYYY-MM-DD HH:mm:ss')
           }
           else {
-            data = {
-              check_in: ''
-            }
-            id = value.id
+            checkin = ''
+          }
+          let id = value.id
+          let data = {
+            check_in: checkin
           }
           this.$store.dispatch('manageUpdate', {id: id, data: data})
             .then(() => {
               this.getCheckFrequencyEmployees()
             })
         },
-        alertAlterToggle (value) {
+        submitAlterCheckoutToggle (value) {
+          let checkout
+          if (value.check_in === null) {
+            checkout = moment().format('YYYY-MM-DD HH:mm:ss')
+          }
+          else {
+            checkout = ''
+          }
+          let id = value.id
+          let data = {
+            check_out: checkout
+          }
+          this.$store.dispatch('manageUpdate', {id: id, data: data})
+            .then(() => {
+              this.getCheckFrequencyEmployees()
+            })
+        },
+        alertAlterCheckinToggle (value) {
           Dialog.create({
             title: 'Tem certeza que deseja desatribuir a frequência?',
-            message: value.employee.name + ' terá a frequência desatribuida!',
+            message: value.name + ' terá a frequência desatribuida!',
             buttons: [
               {
                 label: 'Cancelar',
                 handler: () => {
-                  console.log(this.check_inArray.push(value.employee.id))
-                  return this.check_inArray.push(value.employee.id)
+                  return this.check_inArray.push(value.employee_id)
                 }
               },
               {
                 label: 'Confirmar',
                 handler: () => {
-                  this.submitAlterToggle(value)
+                  this.submitAlterCheckinToggle(value)
                 }
               }
             ]
           })
         },
-        goTo (value) {
-          console.log(value)
-        },
-        refresh (done) {
-          this.timeout = setTimeout(() => {
-            done()
-          }, 5000)
+        alertAlterCheckoutToggle (value) {
+          Dialog.create({
+            title: 'Tem certeza que deseja desatribuir a frequência?',
+            message: value.name + ' terá a frequência desatribuida!',
+            buttons: [
+              {
+                label: 'Cancelar',
+                handler: () => {
+                  return this.check_outArray.push(value.employee_id)
+                }
+              },
+              {
+                label: 'Confirmar',
+                handler: () => {
+                  this.submitAlterCheckoutToggle(value)
+                }
+              }
+            ]
+          })
         },
         getCheckFrequencyEmployees () {
           this.$http.get('http://127.0.0.1:8000/api/manage/employee/checkfrequency/' + this.$route.params.id)
@@ -94,17 +111,27 @@
         },
         alterCheckin (value) {
           if (value.check_in !== null) {
-            this.alertAlterToggle(value)
+            this.alertAlterCheckinToggle(value)
           }
           else {
-            this.submitAlterToggle(value)
+            this.submitAlterCheckinToggle(value)
           }
-          console.log(this.check_inArray)
+        },
+        alterCheckout (value) {
+          if (value.check_out !== null) {
+            this.alertAlterCheckoutToggle(value)
+          }
+          else {
+            this.submitAlterCheckinToggle(value)
+          }
         }
       },
       computed: {
         check_inArray () {
           return this.$store.state.manageEvents.employeeCheckinList
+        },
+        check_outArray () {
+          return this.$store.state.manageEvents.employeeCheckoutList
         },
         progress () {
           let x = this.event.quantityEmployees
@@ -117,6 +144,7 @@
       },
       mounted () {
         this.$store.dispatch('employeeCheckinListGet', this.$route.params.id)
+        this.$store.dispatch('employeeCheckoutListGet', this.$route.params.id)
         this.getCheckFrequencyEmployees()
       },
       filters: {

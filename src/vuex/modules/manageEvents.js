@@ -6,7 +6,8 @@ export default {
     manageList: [],
     one: {},
     manageEmployees: [],
-    employeeCheckinList: []
+    employeeCheckinList: [],
+    employeeCheckoutList: []
   },
   mutations: {
     update (state, config) {
@@ -37,6 +38,15 @@ export default {
         .then((res) => {
           context.commit('update', {
             state: 'employeeCheckinList',
+            data: res.data
+          })
+        })
+    },
+    employeeCheckoutListGet (context, id) {
+      return Vue.http.get('http://127.0.0.1:8000/api/manage/employee/checkin/list/events/' + id)
+        .then((res) => {
+          context.commit('update', {
+            state: 'employeeCheckoutList',
             data: res.data
           })
         })

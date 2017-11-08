@@ -4,7 +4,6 @@ export default {
     return {
       config: {
         title: 'Registrar Frequências',
-        refresh: true,
         bodyStyle: {
           maxHeight: '500px'
         },
@@ -17,10 +16,7 @@ export default {
         labels: {
           columns: 'Colunas',
           search: 'Pesquisar Funcionário...',
-          allCols: 'Todas as colunas',
-          clear: 'limpar',
-          all: 'Todos',
-          rows: 'Registros por página'
+          allCols: 'Todas as colunas'
         }
       },
       columns: [
