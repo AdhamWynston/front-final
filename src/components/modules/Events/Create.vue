@@ -233,38 +233,9 @@
   import { required, minValue } from 'vuelidate/lib/validators'
   import { CNPJ, CPF } from 'cpf_cnpj'
   import {
-    QKnob,
-    QTooltip,
-    QDatetime,
-    QDatetimeRange,
-    QInput,
-    QSelect,
-    QBtn,
     Loading,
-    QField,
-    QAlert,
     Toast,
-    QStepper,
-    QStep,
-    QStepperNavigation,
-    QAutocomplete,
-    QSearch,
-    filter,
-    QCard,
-    QCardTitle,
-    QCardMedia,
-    QCardActions,
-    QCardSeparator,
-    QCardMain,
-    QList,
-    QItem,
-    QItemMain,
-    QItemSide,
-    QItemTile,
-    QCollapsible,
-    QRating,
-    QParallax,
-    QIcon
+    filter
   } from 'quasar'
   import moment from 'moment'
   function show (options) {
@@ -326,17 +297,6 @@
       },
       cList () {
         return this.$store.state.clients.list
-      },
-      quantityEmployeesError () {
-        if (!this.$v.form.quantityEmployees.required) {
-          return 'Este campo é obrigatório!'
-        }
-        else if (!this.$v.form.quantityEmployees.checkDate) {
-          return `Só existem ${this.available} funcionários disponíveis para essa data!`
-        }
-        else {
-          return null
-        }
       },
       endError () {
         if (!this.$v.form.endDate.required) {
@@ -432,7 +392,6 @@
           show()
           this.$store.dispatch('eventInsert', data)
             .then((response) => {
-              console.log(response)
               this.$router.push('/events')
               Toast.create.positive({
                 html: 'Evento cadastrado com sucesso!',
@@ -471,37 +430,8 @@
       this.getClients()
     },
     components: {
-      QKnob,
-      QTooltip,
-      QDatetimeRange,
-      QDatetime,
-      QSelect,
       Loading,
-      QAlert,
-      Toast,
-      QStepper,
-      QStep,
-      QStepperNavigation,
-      QAutocomplete,
-      QField,
-      QSearch,
-      QInput,
-      QCard,
-      QCardTitle,
-      QCardMedia,
-      QCardActions,
-      QCardSeparator,
-      QCardMain,
-      QList,
-      QItem,
-      QItemMain,
-      QItemSide,
-      QItemTile,
-      QCollapsible,
-      QRating,
-      QBtn,
-      QParallax,
-      QIcon
+      Toast
     }
   }
 </script>

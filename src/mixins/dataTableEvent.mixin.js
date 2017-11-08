@@ -3,7 +3,7 @@ export default {
   data () {
     return {
       config: {
-        title: 'Listagem dos Funcionários',
+        title: 'Listagem dos eventos',
         columnPicker: true,
         leftStickyColumns: 0,
         rightStickyColumns: 2,
@@ -24,7 +24,7 @@ export default {
         },
         labels: {
           columns: 'Colunas',
-          search: 'Pesquisar cliente...',
+          search: 'Pesquisar evento...',
           allCols: 'Todas as colunas',
           clear: 'limpar',
           all: 'Todos',
@@ -37,7 +37,7 @@ export default {
       },
       columns: [
         {
-          label: 'Nome',
+          label: 'Nome do evento',
           field: 'name',
           type: 'string',
           width: '80px',
@@ -70,12 +70,12 @@ export default {
           }
         },
         {
-          label: 'Status',
+          label: 'Situação',
           field: 'sta',
           filter: true,
           sort: true,
           type: 'integer',
-          width: '50px'
+          width: '60px'
         },
         {
           label: 'Ações',

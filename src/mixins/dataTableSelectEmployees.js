@@ -2,7 +2,7 @@ import {CPF} from 'cpf_cnpj'
 export default {
   data () {
     return {
-      configCheck: {
+      config: {
         title: 'Escalar funcionários',
         columnPicker: true,
         leftStickyColumns: 0,
@@ -19,18 +19,14 @@ export default {
         },
         labels: {
           columns: 'Colunas',
-          search: 'Pesquisar cliente...',
+          search: 'Pesquisar Funcionário...',
           allCols: 'Todas as colunas',
           clear: 'limpar',
           all: 'Todos',
-          rows: 'Registros por página',
-          selected: {
-            singular: 'Funcionário selecionado.',
-            plural: 'Funcionários selecionados'
-          }
+          rows: 'Registros por página'
         }
       },
-      columnsCheck: [
+      columns: [
         {
           label: '#',
           field: 'select',
@@ -39,8 +35,8 @@ export default {
         {
           label: 'Nome',
           field: 'name',
-          type: 'string',
           width: '100px',
+          type: 'string',
           sort: true,
           filter: true
         },
@@ -62,6 +58,9 @@ export default {
           sort: false,
           filter: true
         }
+      ],
+      columnsCheck: [
+
       ]
     }
   }

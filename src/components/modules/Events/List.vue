@@ -16,16 +16,27 @@
             </template>
             <template slot="col-actions" slot-scope="cell">
               <template v-if="cell.row.status === 1">
-                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
+                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small>
+                  <q-tooltip>Gerenciar Evento</q-tooltip>
+                  <q-icon name="ion-gear-a"></q-icon></q-btn>
               </template>
               <template v-if="cell.row.status === 2">
-                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
+                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small>
+                  <q-tooltip>Gerenciar Evento</q-tooltip>
+                  <q-icon name="ion-gear-a"></q-icon>
+                </q-btn>
               </template>
               <template v-if="cell.row.status === 3">
-                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
+                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small>
+                  <q-tooltip>Gerenciar Evento</q-tooltip>
+                  <q-icon name="ion-gear-a"></q-icon>
+                </q-btn>
               </template>
               <template v-if="cell.row.status === 4">
-                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small><q-tooltip>Gerenciar Evento</q-tooltip><q-icon name="ion-gear-a"></q-icon></q-btn>
+                <q-btn color="primary" round @click="goManage(cell.row.id)" flat small>
+                  <q-tooltip>Gerenciar Evento</q-tooltip>
+                  <q-icon name="ion-gear-a"></q-icon>
+                </q-btn>
               </template>
             </template>
             <template slot="col-startDate" slot-scope="cell">
@@ -76,37 +87,18 @@
     import moment from 'moment'
     import {
       Loading,
-      QOptionGroup,
-      QIcon,
-      QFixedPosition,
-      QFab,
-      QFabAction,
-      QDataTable,
-      QField,
-      QInput,
-      QCheckbox,
-      QSelect,
-      QSlider,
-      clone,
-      QBtn,
-      QTooltip,
-      QCollapsible
+      clone
     } from 'quasar'
     export default {
       mixins: [dataTableEventMixin],
       data () {
         return {
-          client: '',
-          filtro: '',
           events: []
         }
       },
       computed: {
       },
       methods: {
-        computedHours (start) {
-          console.log(start)
-        },
         closeLoading () {
           setTimeout(Loading.hide, 2000)
         },
@@ -125,9 +117,6 @@
           })
           this.closeLoading()
           this.$router.push('/events/' + id + '/manage')
-        },
-        goManageView (id) {
-          return this.$router.push('/events/' + id + '/manage')
         },
         goTo (item) {
           return this.$router.push('/events/' + item)
@@ -173,22 +162,6 @@
           }
           this.config.bodyStyle = style
         }
-      },
-      components: {
-        QOptionGroup,
-        QIcon,
-        QFixedPosition,
-        QFab,
-        QFabAction,
-        QDataTable,
-        QField,
-        QInput,
-        QCheckbox,
-        QSelect,
-        QSlider,
-        QBtn,
-        QTooltip,
-        QCollapsible
       }
     }
 </script>

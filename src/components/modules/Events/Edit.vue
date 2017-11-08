@@ -47,7 +47,7 @@
                             <div class="col-xs-12 col-sm-6">
                                 <q-field
                                         :error="$v.form.startDate.$error"
-                                        :error-label="startError">
+                                        :error-label="startDateError">
                                     <q-datetime
                                             id="started"
                                             v-model="form.startDate"
@@ -69,7 +69,7 @@
                                 <div class="col-xs-12 col-sm-6">
                                     <q-field
                                             :error="$v.form.endDate.$error"
-                                            :error-label="endError">
+                                            :error-label="endDateError">
                                         <q-datetime
                                                 id="terminated"
                                                 format24h
@@ -218,38 +218,9 @@
   import { required, minValue } from 'vuelidate/lib/validators'
   import { CNPJ, CPF } from 'cpf_cnpj'
   import {
-    QKnob,
-    QTooltip,
-    QDatetime,
-    QDatetimeRange,
-    QInput,
-    QSelect,
-    QBtn,
-    Loading,
-    QField,
-    QAlert,
     Toast,
-    QStepper,
-    QStep,
-    QStepperNavigation,
-    QAutocomplete,
-    QSearch,
     filter,
-    QCard,
-    QCardTitle,
-    QCardMedia,
-    QCardActions,
-    QCardSeparator,
-    QCardMain,
-    QList,
-    QItem,
-    QItemMain,
-    QItemSide,
-    QItemTile,
-    QCollapsible,
-    QRating,
-    QParallax,
-    QIcon
+    Loading
   } from 'quasar'
   import moment from 'moment'
   export default {
@@ -296,10 +267,7 @@
       form () {
         return this.$store.state.events.one || {}
       },
-      cList () {
-        return this.$store.state.clients.list
-      },
-      endError () {
+      endDateError () {
         if (!this.$v.form.endDate.required) {
           return 'Este campo é obrigatório!'
         }
@@ -310,7 +278,7 @@
           return null
         }
       },
-      startError () {
+      startDateError () {
         if (!this.$v.form.startDate.required) {
           return 'Este campo é obrigatório!'
         }
@@ -360,18 +328,6 @@
       closeLoading () {
         setTimeout(Loading.hide, 600)
       },
-      teste () {
-        let data = {
-          quantityEmployees: this.form.quantityEmployees,
-          startDate: this.form.startDate,
-          endDate: this.form.endDate
-        }
-        this.$http.post('http://127.0.0.1:8000/api/events/check', data)
-          .then((response) => {
-            console.log(response.data)
-          })
-        console.log(data)
-      },
       cepFormat () {
         if (this.form.zip_code.length === 8) {
           this.form.zip_code = PhoneFormatter.modules.cepFormatter(this.form.zip_code)
@@ -409,7 +365,6 @@
         if (this.$v.form.$invalid === false) {
           this.$store.dispatch('eventUpdate', {id: this.$route.params.id, data: data})
             .then((response) => {
-              console.log(response)
               Loading.show()
               this.$router.push('/events')
               this.closeLoading()
@@ -443,37 +398,7 @@
       }
     },
     components: {
-      QKnob,
-      QTooltip,
-      QDatetimeRange,
-      QDatetime,
-      QSelect,
-      Loading,
-      QAlert,
-      Toast,
-      QStepper,
-      QStep,
-      QStepperNavigation,
-      QAutocomplete,
-      QField,
-      QSearch,
-      QInput,
-      QCard,
-      QCardTitle,
-      QCardMedia,
-      QCardActions,
-      QCardSeparator,
-      QCardMain,
-      QList,
-      QItem,
-      QItemMain,
-      QItemSide,
-      QItemTile,
-      QCollapsible,
-      QRating,
-      QBtn,
-      QParallax,
-      QIcon
+      Toast
     }
   }
 </script>

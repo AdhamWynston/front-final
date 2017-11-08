@@ -41,35 +41,11 @@
   import dataTableUserMixin from '../../../mixins/dataTableUser.mixin'
   import {
     Events,
-    QModal,
-    QFixedPosition,
-    QIcon,
-    QDataTable,
-    QField,
-    QInput,
-    QCheckbox,
-    QSelect,
-    QSlider,
-    QBtn,
-    QTooltip,
-    QCollapsible,
     clone
   } from 'quasar'
   export default {
     components: {
-      Events,
-      QModal,
-      QFixedPosition,
-      QIcon,
-      QDataTable,
-      QField,
-      QInput,
-      QCheckbox,
-      QSelect,
-      QSlider,
-      QBtn,
-      QTooltip,
-      QCollapsible
+      Events
     },
     data () {
       return {

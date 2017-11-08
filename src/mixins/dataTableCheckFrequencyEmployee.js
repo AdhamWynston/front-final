@@ -3,13 +3,10 @@ export default {
   data () {
     return {
       config: {
-        title: 'Escalar funcionários',
-        columnPicker: true,
-        leftStickyColumns: 0,
-        rightStickyColumns: 2,
+        title: 'Registrar Frequências',
         refresh: true,
         bodyStyle: {
-          maxHeight: '800'
+          maxHeight: '500px'
         },
         rowHeight: '40px',
         responsive: true,
@@ -19,55 +16,19 @@ export default {
         },
         labels: {
           columns: 'Colunas',
-          search: 'Pesquisar cliente...',
+          search: 'Pesquisar Funcionário...',
           allCols: 'Todas as colunas',
           clear: 'limpar',
           all: 'Todos',
-          rows: 'Registros por página',
-          selected: {
-            singular: 'Funcionário selecionado.',
-            plural: 'Funcionários selecionados'
-          }
+          rows: 'Registros por página'
         }
       },
       columns: [
         {
-          label: '#',
-          field: 'select',
-          width: '20px'
-        },
-        {
-          label: 'Nome',
-          field: 'name',
-          width: '100px',
-          type: 'string',
-          sort: true,
-          filter: true
-        },
-        {
-          label: 'Nº Documento',
-          field: 'document',
-          width: '50px',
-          sort: false,
-          filter: true,
-          format (value) {
-            value = CPF.strip(value)
-            return CPF.format(value)
-          }
-        },
-        {
-          label: 'Telefone',
-          field: 'phone',
-          width: '50px',
-          sort: false,
-          filter: true
-        }
-      ],
-      columnsCheck: [
-        {
           label: 'Nome',
           field: 'name',
           type: 'string',
+          width: '200px',
           sort: true,
           filter: true
         },
@@ -76,17 +37,21 @@ export default {
           field: 'document',
           sort: false,
           width: '200px',
-          filter: true
+          filter: true,
+          format (value) {
+            value = CPF.strip(value)
+            return CPF.format(value)
+          }
         },
         {
           label: 'Entrada',
           field: 'checkin',
-          width: '120px'
+          width: '150px'
         },
         {
           label: 'Saída',
           field: 'checkout',
-          width: '120px'
+          width: '150px'
         }
       ]
     }

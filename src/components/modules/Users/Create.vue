@@ -61,18 +61,8 @@
 <script>
   import {
     Events,
-    QSelect,
-    QField,
-    QInput,
     Loading,
-    QCard,
-    QBtn,
-    Toast,
-    QCardTitle,
-    QCardMedia,
-    QCardActions,
-    QCardSeparator,
-    QCardMain
+    Toast
   }
     from 'quasar'
   import { required, email, minLength } from 'vuelidate/lib/validators'
@@ -193,21 +183,6 @@ export default {
           return null
         }
       }
-    },
-    components: {
-      Loading,
-      Events,
-      QSelect,
-      QField,
-      QInput,
-      QCard,
-      QBtn,
-      Toast,
-      QCardTitle,
-      QCardMedia,
-      QCardActions,
-      QCardSeparator,
-      QCardMain
     }
 }
 </script>
