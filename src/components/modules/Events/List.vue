@@ -68,7 +68,7 @@
             </div>
           </template>
             <template slot="selection" slot-scope="selection">
-                <q-btn class="primary clear" @click="goTo(selection)"><q-icon name="remove_red_eye"></q-icon>Visualizar Registro</q-btn>
+                <q-btn class="primary clear" @click="goTo(selection)"><q-icon name="remove_red_eye"></q-icon>Visualizar Evento</q-btn>
             </template>
         </q-data-table>
         <q-fixed-position corner="bottom-left" :offset="[10, 10]">

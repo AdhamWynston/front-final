@@ -43,7 +43,7 @@ export default {
         })
     },
     employeeCheckoutListGet (context, id) {
-      return Vue.http.get('http://127.0.0.1:8000/api/manage/employee/checkin/list/events/' + id)
+      return Vue.http.get('http://127.0.0.1:8000/api/manage/employee/checkout/list/events/' + id)
         .then((res) => {
           context.commit('update', {
             state: 'employeeCheckoutList',
