@@ -4,7 +4,7 @@
             <q-collapsible
                     icon="info_outline"
                     label="Dados do Evento"
-                    style="max-width: 1000px; margin-bottom: 10px"
+                    style="max-width: 1200px; margin-bottom: 10px"
                     class="shadow-2"
             >
                 <div>
@@ -55,7 +55,7 @@
           <q-collapsible
              icon="ion-person"
              label="Dados do Cliente"
-             style="max-width: 1000px; margin-bottom: 10px"
+             style="max-width: 1200px; margin-bottom: 10px"
              class="shadow-2"
           >
             <div>

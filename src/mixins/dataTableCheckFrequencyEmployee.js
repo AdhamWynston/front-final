@@ -1,4 +1,5 @@
 import {CPF} from 'cpf_cnpj'
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -24,7 +25,7 @@ export default {
           label: 'Nome',
           field: 'name',
           type: 'string',
-          width: '200px',
+          width: '400px',
           sort: true,
           filter: true
         },
@@ -42,12 +43,32 @@ export default {
         {
           label: 'Entrada',
           field: 'checkin',
-          width: '150px'
+          width: '100px'
+        },
+        {
+          label: 'Registrado em',
+          field: 'check_in',
+          format (value) {
+            if (value === null) {
+              return ''
+            }
+            return moment(value).format('DD/MM/YYYY HH:mm:ss')
+          }
         },
         {
           label: 'Saída',
           field: 'checkout',
-          width: '150px'
+          width: '100px'
+        },
+        {
+          label: 'Registrado em',
+          field: 'check_out',
+          format (value) {
+            if (value === null) {
+              return ''
+            }
+            return moment(value).format('DD/MM/YYYY HH:mm:ss')
+          }
         }
       ]
     }

@@ -70,14 +70,13 @@
               {
                 label: 'Cancelar',
                 handler: () => {
-                  console.log(this.check_inArray)
                   return this.check_inArray.push(value.employee_id)
                 }
               },
               {
                 label: 'Confirmar',
                 handler: () => {
-                  this.submitAlterCheckoutToggle(value)
+                  this.submitAlterCheckinToggle(value)
                 }
               }
             ]
@@ -91,7 +90,6 @@
               {
                 label: 'Cancelar',
                 handler: () => {
-                  console.log(this.check_outArray)
                   return this.check_outArray.push(value.employee_id)
                 }
               },
@@ -107,7 +105,6 @@
         getCheckFrequencyEmployees () {
           this.$http.get('http://127.0.0.1:8000/api/manage/employee/checkfrequency/' + this.$route.params.id)
             .then((response) => {
-              console.log(response)
               this.checkFrequencyEmployeeList = response.data
             })
         },
