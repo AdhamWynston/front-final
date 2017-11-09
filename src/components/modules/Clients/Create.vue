@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
               <q-field
                       :error="$v.client.name.$error"
-                      error-label="Por favor, preencha este campo">
+                      :error-label="nameError">
                 <q-input
                         max-length="100"
                         v-model="client.name"
@@ -264,7 +264,6 @@
     computed: {
       documentComputed: {
         get: function () {
-          console.log('oi')
           if (this.client.type === 1) {
             return CPF.format(this.client.document)
           }

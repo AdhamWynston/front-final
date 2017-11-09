@@ -110,7 +110,7 @@
         <div>
           <q-item tag="label">
             <q-item-main>
-              <q-item-tile label>employeee está ativo?</q-item-tile>
+              <q-item-tile label>Funcionário está ativo?</q-item-tile>
               <q-item-tile sublabel>Selecione se sim</q-item-tile>
             </q-item-main>
             <q-item-side right>
@@ -132,7 +132,7 @@
     </q-list>
       </div>
     </div>
-    <q-fixed-position corner="bottom-right" :offset="[10, 10]">
+    <q-fixed-position corner="bottom-left" :offset="[10, 10]">
       <q-btn  @click="goEdit()" round icon="ion-edit" color="orange">
       </q-btn>
     </q-fixed-position>

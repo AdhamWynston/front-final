@@ -54,15 +54,6 @@
             </q-item-side>
           </q-item>
           <q-item-separator />
-          <q-item tag="label">
-            <q-item-main>
-              <q-item-tile label>Notificações</q-item-tile>
-              <q-item-tile sublabel>Notificar o cliente quando estiver eventos próximos?</q-item-tile>
-            </q-item-main>
-            <q-item-side>
-              <q-toggle @input="alterChecked" color="secondary" v-model="checked" />
-            </q-item-side>
-          </q-item>
         </div>
       </q-collapsible>
     </q-list>

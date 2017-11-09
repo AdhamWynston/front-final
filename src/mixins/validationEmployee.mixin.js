@@ -7,7 +7,10 @@ export default {
         return 'Este campo é obrigatório!'
       }
       else if (!this.$v.employee.document.isCPF) {
-        return 'Este documento não é válido'
+        return 'Este documento não é válido!'
+      }
+      else if (!this.$v.employee.document.isUnique) {
+        return 'Este documento já está cadastrado!'
       }
       else {
         return null
@@ -31,6 +34,9 @@ export default {
       else if (!this.$v.employee.email.email) {
         return 'Preencha com E-mail válido!'
       }
+      else if (!this.$v.employee.email.isUnique) {
+        return 'Este E-mail já está cadastrado!'
+      }
       else {
         return null
       }
@@ -38,13 +44,44 @@ export default {
   },
   validations: {
     employee: {
-      email: { required, email },
+      email: { required,
+        email,
+        async isUnique (value) {
+          let id
+          if (value === '') {
+            return true
+          }
+          if (this.$route.params.id) {
+            id = this.$route.params.id
+          }
+          else {
+            id = 0
+          }
+          const response = await fetch(`http://127.0.0.1:8000/api/employees/${value}/` + id)
+          return Boolean(await response.json())
+        }
+      },
       name: { required,
         minLength: minLength(3)
       },
       document: { required,
         numeric,
         minLength: minLength(11),
+        async isUnique (value) {
+          let id
+          if (value === '') {
+            return true
+          }
+          value = CPF.strip(value)
+          if (this.$route.params.id) {
+            id = this.$route.params.id
+          }
+          else {
+            id = 0
+          }
+          const response = await fetch(`http://127.0.0.1:8000/api/employees/document/${value}/` + id)
+          return Boolean(await response.json())
+        },
         isCPF (value) {
           value = CPF.strip(value)
           if (value.length === 11) {

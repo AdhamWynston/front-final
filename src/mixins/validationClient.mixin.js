@@ -1,10 +1,13 @@
-import { required, alpha, email, numeric, minLength } from 'vuelidate/lib/validators'
+import { required, email, numeric, minLength } from 'vuelidate/lib/validators'
 import { CNPJ, CPF } from 'cpf_cnpj'
 export default {
   computed: {
     documentError () {
       if (!this.$v.client.document.required) {
         return 'Este campo é obrigatório!'
+      }
+      else if (!this.$v.client.document.isUnique) {
+        return 'Este documento já está cadastrado!'
       }
       else if (!this.$v.client.document.isCPF) {
         return 'Este documento não é válido'
@@ -15,11 +18,9 @@ export default {
     },
     nameError () {
       if (!this.$v.client.name.required) {
-        console.log(this.$v.client.name.required)
         return 'Este campo é obrigatório!'
       }
       else if (!this.$v.client.name.minLength) {
-        console.log(this.$v.client.name.minLength)
         return 'Preencha com nome válido!'
       }
       else {
@@ -76,26 +77,26 @@ export default {
         }
       },
       name: { required,
-        alpha,
-        minLength: minLength(3),
+        minLength: minLength(3)
+      },
+      document: { required,
+        numeric,
+        minLength: minLength(11),
         async isUnique (value) {
           let id
           if (value === '') {
             return true
           }
+          value = CPF.strip(value)
           if (this.$route.params.id) {
             id = this.$route.params.id
           }
           else {
             id = 0
           }
-          const response = await fetch(`http://127.0.0.1:8000/api/clients/${value}/` + id)
+          const response = await fetch(`http://127.0.0.1:8000/api/clients/document/${value}/` + id)
           return Boolean(await response.json())
-        }
-      },
-      document: { required,
-        numeric,
-        minLength: minLength(11),
+        },
         isCPF (value) {
           value = CPF.strip(value)
           if (value.length === 11) {

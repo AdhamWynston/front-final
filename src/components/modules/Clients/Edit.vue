@@ -35,7 +35,7 @@
             <div class="col-xs-12 col-sm-8">
               <q-field
                       :error="$v.client.document.$error"
-                      error-label="Por favor, preencha um Nº Documento válido">
+                      :error-label="documentError">
                 <template v-if="this.client.type === 1">
                   <q-input
                           v-model="documentComputed"
@@ -272,6 +272,9 @@
           Toast.create.negative('Verifique os dados')
         }
       }
+    },
+    mounted () {
+      this.$store.dispatch('clientsGet', this.$route.params.id)
     },
     computed: {
       client () {
