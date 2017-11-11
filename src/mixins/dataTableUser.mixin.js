@@ -11,7 +11,7 @@ export default {
           maxHeight: '500px'
         },
         selection: 'single',
-        rowHeight: '40px',
+        rowHeight: '60px',
         responsive: true,
         pagination: {
           rowsPerPage: 5,
@@ -44,6 +44,14 @@ export default {
           filter: true
         },
         {
+          label: 'E-mail',
+          field: 'email',
+          type: 'string',
+          width: '100px',
+          sort: false,
+          filter: true
+        },
+        {
           label: 'Função',
           field: 'role',
           width: '50px',
@@ -59,25 +67,17 @@ export default {
           }
         },
         {
-          label: 'Status',
-          field: 'status',
-          filter: true,
-          sort: true,
-          format (value) {
-            if (value === 1) {
-              return '<i class="material-icons text-positive">check_circle</i> Ativado'
-            }
-            return '<i class="material-icons text-negative">block</i> Desativado'
-          },
-          width: '40px'
-        },
-        {
           label: 'Cadastrado em',
           field: 'created_at',
-          width: '50px',
+          width: '60px',
           type: 'date',
           sort: true,
           filter: true
+        },
+        {
+          label: 'Ações',
+          field: 'actions',
+          width: '30px'
         }
       ]
     }

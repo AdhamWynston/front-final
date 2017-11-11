@@ -26,6 +26,9 @@
                         <q-card-separator />
                         <br>
                         <q-btn color="primary" class="full-width" @click="submit()">Login</q-btn>
+                        <div align="center">
+                          <a href=""> Esqueceu sua senha?</a>
+                        </div>
                     </q-card-main>
                 </q-card>
             </div>

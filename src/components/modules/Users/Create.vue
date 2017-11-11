@@ -129,7 +129,8 @@ export default {
         })
         if (this.$v.user.$invalid === false) {
           this.$store.dispatch('userInsert', this.user)
-            .then(() => {
+            .then((response) => {
+              console.log(response)
               this.$router.push('/admin/users')
               this.closeLoading()
               Toast.create.positive({
@@ -137,7 +138,8 @@ export default {
                 icon: 'done'
               })
             })
-            .catch(() => {
+            .catch((response) => {
+              console.log(response)
               this.closeLoading()
               Toast.create.negative({
                 html: 'Não pode ser cadastrado',

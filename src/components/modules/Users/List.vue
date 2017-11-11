@@ -23,6 +23,9 @@
       <template slot="col-created_at" slot-scope="cell">
         <span>{{cell.row.created_at | moment }}</span>
       </template>
+      <template slot="col-actions" slot-scope="cell">
+        <q-btn  small flat round color="negative" @click="goRemove(cell.row.id)"><q-icon name="ion-android-remove-circle"></q-icon></q-btn>
+      </template>
       <template slot="selection" slot-scope="selection">
         <q-btn class="primary clear" @click="goTo(selection)"><q-icon name="remove_red_eye"></q-icon>Visualizar Registro</q-btn>
       </template>
@@ -58,6 +61,9 @@
       }
     },
     methods: {
+      goRemove (value) {
+        console.log(value)
+      },
       createUser () {
         Events.$emit('createUser')
       },
