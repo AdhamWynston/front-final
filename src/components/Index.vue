@@ -32,43 +32,18 @@
     import {
         Loading,
         QSideLink,
-        QLayout,
-        QToolbar,
-        QToolbarTitle,
-        QBtn,
-        QIcon,
-        QTabs,
         Ripple,
-        QRouteTab,
-        QList,
-        Events,
-        QListHeader,
-        QItem,
-        QItemSide,
-        QItemMain
+        Events
     } from 'quasar'
 
     export default {
         name: 'index',
         components: {
+            Ripple,
             Toolbar,
             Drawer,
-            Loading,
-            Ripple,
             QSideLink,
-            Events,
-            QLayout,
-            QToolbar,
-            QTabs,
-            QRouteTab,
-            QToolbarTitle,
-            QBtn,
-            QIcon,
-            QList,
-            QListHeader,
-            QItem,
-            QItemSide,
-            QItemMain
+            Events
         },
         mixins: [authMixin],
         data () {

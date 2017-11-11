@@ -21,33 +21,15 @@
 
 <script>
   import {
-    QIcon,
-    QToolbar,
-    QToolbarTitle,
-    QBtn,
-    QList,
     Loading,
     QListHeader,
-    QItem,
-    QItemSide,
-    QItemMain,
-    QSideLink,
     Events
   } from 'quasar'
   export default {
     name: 'drawer',
     components: {
       Loading,
-      QToolbar,
-      QToolbarTitle,
-      QBtn,
-      QIcon,
-      QList,
       QListHeader,
-      QItem,
-      QItemSide,
-      QItemMain,
-      QSideLink,
       Events
     },
     methods: {

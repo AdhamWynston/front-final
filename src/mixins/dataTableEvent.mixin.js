@@ -47,7 +47,7 @@ export default {
         {
           label: 'Início',
           field: 'startDate',
-          width: '60px',
+          width: '50px',
           type: 'date',
           sort: true,
           filter: true
@@ -56,14 +56,14 @@ export default {
           label: 'Término',
           field: 'endDate',
           type: 'date',
-          width: '60px',
+          width: '50px',
           sort: true,
           filter: true
         },
         {
           label: 'Duração',
           field: 'duration',
-          width: '40px',
+          width: '30px',
           sort: true,
           format (value) {
             return value + ' Horas'
@@ -75,11 +75,16 @@ export default {
           filter: true,
           sort: true,
           type: 'integer',
-          width: '60px'
+          width: '50px'
         },
         {
           label: 'Ações',
           field: 'actions',
+          width: '30px'
+        },
+        {
+          label: 'Relatório',
+          field: 'reports',
           width: '30px'
         }
       ]

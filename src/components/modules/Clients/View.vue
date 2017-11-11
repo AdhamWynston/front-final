@@ -131,7 +131,7 @@
       </div>
     </div>
     <q-fixed-position corner="bottom-left" :offset="[16, 16]">
-      <q-btn  @click="goEdit()" round icon="ion-edit" color="orange">
+      <q-btn  @click="goReport()" round icon="ion-edit" color="orange">
       </q-btn>
     </q-fixed-position>
   </div>
@@ -141,84 +141,10 @@
   /* eslint-disable indent */
 import moment from 'moment'
 import {
-  QFixedPosition,
-  QFab,
-  QFabAction,
-  Toast,
-  QModal,
-  QStepper,
-  QStep,
-  QStepperNavigation,
-  QModalLayout,
-  QCheckbox,
-  QRadio,
-  QToggle,
-  QList,
-  QListHeader,
-  QItem,
-  QItemSeparator,
-  QCollapsible,
-  QInnerLoading,
-  QItemSide,
-  QItemMain,
-  QItemTile,
-  QLayout,
-  QCard,
-  QCardTitle,
-  QCardMedia,
-  QCardActions,
-  QCardSeparator,
-  QCardMain,
-  QToolbar,
-  QToolbarTitle,
-  QSearch,
-  QTabs,
-  QRouteTab,
-  QBtn,
-  QIcon,
-  QSideLink,
-  QTooltip,
-  QScrollArea} from 'quasar'
+  Toast} from 'quasar'
 export default {
   components: {
-    QFixedPosition,
-    QCheckbox,
-    QModal,
-    QModalLayout,
-    QRadio,
-    QToggle,
-    QCollapsible,
-    QList,
-    QStepper,
-    QStep,
-    QStepperNavigation,
-    QItem,
-    QItemSeparator,
-    QItemTile,
-    QInnerLoading,
-    QTooltip,
-    QCard,
-    QCardMedia,
-    QCardActions,
-    QCardSeparator,
-    QCardMain,
-    QCardTitle,
-    QFabAction,
-    QFab,
-    QLayout,
-    QToolbar,
-    QToolbarTitle,
-    QSearch,
-    QTabs,
-    QRouteTab,
-    QBtn,
-    QIcon,
-    QItemSide,
-    QItemMain,
-    Toast,
-    QSideLink,
-    QListHeader,
-    QScrollArea
+    Toast
   },
   data () {
     return {
@@ -244,6 +170,10 @@ export default {
     }
   },
   methods: {
+    goReport () {
+      let url = 'http://127.0.0.1:8000/api/testee'
+      window.open(url, '_blank')
+    },
     alterChecked () {
       let check
       if (this.client.status === 1) {

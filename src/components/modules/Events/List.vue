@@ -21,6 +21,14 @@
                   <q-icon name="ion-gear-a"></q-icon>
                 </q-btn>
             </template>
+          <template slot="col-reports" slot-scope="cell">
+            <q-btn color="negative" round @click="goReports(cell.row.id)" flat small>
+              <q-tooltip>
+                Emitir Individual
+              </q-tooltip>
+              <q-icon name="picture_as_pdf"></q-icon>
+            </q-btn>
+          </template>
             <template slot="col-startDate" slot-scope="cell">
                 <span>{{cell.row.startDate | moment }}</span>
             </template>
@@ -86,6 +94,10 @@
       computed: {
       },
       methods: {
+        goReports (value) {
+          let url = 'http://127.0.0.1:8000/api/reports/event/' + value
+          window.open(url, '_blank')
+        },
         closeLoading () {
           setTimeout(Loading.hide, 2000)
         },

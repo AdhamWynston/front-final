@@ -23,6 +23,10 @@
                 <q-item-side icon="computer" />
                 <q-item-main label="Usuários" />
             </q-side-link>
+          <q-side-link item to="/reports">
+            <q-item-side icon="assignment" />
+            <q-item-main label="Relatórios" />
+          </q-side-link>
             <q-item link @click="logout()">
                 <q-item-side  icon="ion-android-exit" />
                 <q-item-main label="Sair" />
